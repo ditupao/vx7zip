@@ -189,6 +189,15 @@ long CCompressFacade::GetEncodeFileList(const string& compress_file_name, FILE_N
     return _impl->GetEncodeFileList(compress_file_name, file_name_list);
 }
 
+/****************************************************************************
+*  Function:       DeleteFileFromEncode
+*  Description:    
+*  Input:          无
+*  Output:         // 对输出参数的说明
+*  Return:         // 函数返回值的说明	
+*  Others:         // 其它说明
+*****************************************************************************/
+
 long CCompressFacade::DeleteFileFromEncode(const string& compress_file_name, FILE_NAME_LIST& delete_file_list, const string& password)
 {
     return _impl->DeleteFileFromEncode(compress_file_name, delete_file_list, password);
