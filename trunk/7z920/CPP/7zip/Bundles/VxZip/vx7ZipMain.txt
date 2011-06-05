@@ -1,0 +1,84 @@
+#include <stdio.h>
+
+#include "VxWorks/CS/VxWorksApi.h"
+#include "ModuleFacade/CompressFacade.h"
+#ifdef __VXWORKS__
+#include <net/utils/ifconfig.h>
+#include <cpluslib.h>
+#endif
+
+
+
+
+void vx7zmain()
+{    
+#if 0	
+	if(filename==NULL || password==NULL)
+	{
+		printf("Para is NULL\n");
+		return 0;
+	}
+#endif
+	cplusCtors("test7zip.out");
+	ioDefPathSet("/tgtsvr");
+
+    CCompressFacade::GetInstance()->Init();
+
+	CCompressFacade::GetInstance()->ShowCodeInfo();
+
+    FILE_NAME_LIST tmpFileList;
+
+#if 1   
+    tmpFileList.push_back("123a.mp3");
+    tmpFileList.push_back("123b.mp3");
+    tmpFileList.push_back("123c.mp3");
+#else
+    tmpFileList.push_back("UTIL.rar");
+#endif  
+
+    printf("############ Benchmark ############\n");
+ //   CompressFacade::GetInstance()->BenchmarkSystem();
+
+//	for(int i = 0; i < 100; ++i)
+	{
+		printf("############ Compress ############\n");
+		CCompressFacade::GetInstance()->EncodeFile(tmpFileList, "123.7z", "");
+
+		printf("############ List ###########\n");
+		CCompressFacade::GetInstance()->ListEncodeFile("123.7z", "");
+
+		printf("############ Get List ###########\n");
+		tmpFileList.clear();
+		CCompressFacade::GetInstance()->GetEncodeFileList("123.7z", tmpFileList);
+
+		FILE_NAME_LIST::iterator iter = tmpFileList.begin();
+		for(; iter != tmpFileList.end(); ++iter)
+			printf("File List: %s\n", iter->c_str());
+
+		printf("############ UnCompress ############\n");
+		tmpFileList.clear();
+		tmpFileList.push_back("123c.mp3");
+		CCompressFacade::GetInstance()->DecodeFile("123.7z", tmpFileList, "", "");
+
+		tmpFileList.clear();
+		tmpFileList.push_back("123c.mp3");
+		tmpFileList.push_back("123b.mp3");
+        CCompressFacade::GetInstance()->DeleteFileFromEncode("123.7z", tmpFileList, "");
+	}
+
+
+    CCompressFacade* tmp = CCompressFacade::GetInstance();
+
+	if(tmp)
+	{
+		delete tmp;
+		tmp = NULL;
+	}
+
+    printf("Run OK!\n");
+
+}
+void test7zip()
+{
+	taskSpawn("tmpRun", 100, 0, 0x100000, (FUNCPTR)vx7zmain, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+}
