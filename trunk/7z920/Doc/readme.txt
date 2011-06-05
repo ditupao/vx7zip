@@ -1,4 +1,7 @@
- 
+Create By Guolisen
+email: guolisen@gmail.com 
+
+
 Code Interface: ModuleFacade/CompressFacade.h
 
 How to use
@@ -10,3 +13,5 @@ How to use
  
 Summary:
 1. 7z Only support Single Thread in this project
+2. sample code: "7z920\CPP\7zip\Bundles\VxZip\vx7ZipMain.txt"
+3. support platform: Vxworks6.4 Vxworks6.8
